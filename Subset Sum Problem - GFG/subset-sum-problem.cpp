@@ -20,8 +20,7 @@ public:
         }
         for(int i=1; i<n+1; i++){
             for(int j=1; j<=sum; j++){
-                if(arr[i-1]==j) dp[i][j]=true;
-                else if(arr[i-1]<j) dp[i][j]=dp[i-1][j] || dp[i-1][j-arr[i-1]];
+                if(arr[i-1]<=j) dp[i][j]=dp[i-1][j] || dp[i-1][j-arr[i-1]];
                 else dp[i][j]=dp[i-1][j];
             }
         }
