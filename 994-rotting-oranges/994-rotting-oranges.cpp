@@ -1,40 +1,56 @@
 class Solution {
 public:
-    bool check(vector<vector<int>>& grid1, vector<vector<int>>& grid2){
-        int n = grid1.size();
-        int m = grid1[0].size();
+    int orangesRotting(vector<vector<int>>& arr) {
+        int n = arr.size();
+        int m = arr[0].size();
+        queue<pair<int,int>> q;
+        int rott=0;
         for(int i=0; i<n; i++){
             for(int j=0; j<m; j++){
-                if(grid1[i][j]!=grid2[i][j]) return false;
+                if(arr[i][j]==1) rott++;
+                if(arr[i][j]==2){
+                    q.push(make_pair(i,j));
+                    rott++;
+                } 
             }
         }
-        return true;
-    }
-    int orangesRotting(vector<vector<int>>& grid) {
-        int n = grid.size();
-        int m = grid[0].size();
-        int count=0;
-        vector<vector<int>> gridcp(n,vector<int>(m));
-        gridcp=grid;
-        while(true){
-            for(int i=0; i<n; i++){
-                for(int j=0; j<m; j++){
-                    if(grid[i][j]==1){
-                         if(i!=0 && grid[i-1][j]==2 || i!=n-1 && grid[i+1][j]==2 || j!=0 && grid[i][j-1]==2 || j!=m-1 && grid[i][j+1]==2){
-                             gridcp[i][j]=2;
-                         }
-                    }
+        int count=q.size();
+        int days=0;
+        while(!q.empty()){
+            int k=q.size();
+            bool push=false;
+            while(k--){
+                int i=q.front().first;
+                int j=q.front().second;
+                q.pop();
+                if(i!=0 && arr[i-1][j]==1){
+                    arr[i-1][j]=2;
+                    q.push(make_pair(i-1,j));
+                    push=true;
+                    count++;
+                }
+                if(i!=n-1 && arr[i+1][j]==1){
+                    arr[i+1][j]=2;
+                    q.push(make_pair(i+1,j));
+                    push=true;
+                    count++;
+                }
+                if(j!=0 && arr[i][j-1]==1){
+                    arr[i][j-1]=2;
+                    q.push(make_pair(i,j-1));
+                    push=true;
+                    count++;
+                }
+                if(j!=m-1 && arr[i][j+1]==1){
+                    arr[i][j+1]=2;
+                    q.push(make_pair(i,j+1));
+                    push=true;
+                    count++;
                 }
             }
-            if(check(grid,gridcp)) break;
-            grid = gridcp;
-            count++;
+            if(push) days++;
         }
-        for(int i=0; i<n; i++){
-            for(int j=0; j<m; j++){
-                if(grid[i][j]==1) return -1;
-            }
-        }
-        return count;
+        if(count==rott) return days;
+        return -1;
     }
 };
