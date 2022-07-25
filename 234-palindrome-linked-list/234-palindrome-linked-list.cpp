@@ -10,15 +10,13 @@
  */
 class Solution {
 public:
-    ListNode *ptr = NULL;
+    ListNode *ptr;
     bool util(ListNode *head){
         if(!head) return true;
-        bool res = util(head->next);
-        if(ptr->val==head->val){
-            ptr = ptr->next;
-            return res && true;
-        }
-        return false;
+        bool temp = util(head->next);
+        temp = temp && ptr->val==head->val;
+        ptr=ptr->next;
+        return temp;
     }
     bool isPalindrome(ListNode* head) {
         if(!head) return true;
