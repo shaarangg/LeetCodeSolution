@@ -21,24 +21,15 @@ public:
 
 class Solution {
 public:
+    unordered_map<Node*, Node*> dict;
     Node* cloneGraph(Node* node) {
         if(!node) return NULL;
-        unordered_map<Node *, Node *> dict;
-        Node *root = new Node(node->val);
-        dict[node]=root;
-        queue<Node *> q;
-        q.push(node);
-        while(!q.empty()){
-            Node *temp = q.front();
-            q.pop();
-            for(auto adj: temp->neighbors){
-                if(dict.find(adj)==dict.end()){
-                    dict[adj]=new Node(adj->val);
-                    q.push(adj);
-                }
-                dict[temp]->neighbors.push_back(dict[adj]);
+        if(dict.find(node)==dict.end()){
+            dict[node]=new Node(node->val);
+            for(auto adj: node->neighbors){
+                dict[node]->neighbors.push_back(cloneGraph(adj));
             }
         }
-        return root;
+        return dict[node];
     }
 };
