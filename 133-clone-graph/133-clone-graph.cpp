@@ -21,14 +21,16 @@ public:
 
 class Solution {
 public:
-    unordered_map<Node*, Node*> dict;
+    unordered_map<Node*,Node *> dict;
     Node* cloneGraph(Node* node) {
         if(!node) return NULL;
         if(dict.find(node)==dict.end()){
-            dict[node]=new Node(node->val);
-            for(auto adj: node->neighbors){
-                dict[node]->neighbors.push_back(cloneGraph(adj));
+            Node *newNode = new Node(node->val);
+            dict[node]=newNode;
+            for(auto i: node->neighbors){
+                newNode->neighbors.push_back(cloneGraph(i));
             }
+            return newNode;
         }
         return dict[node];
     }
